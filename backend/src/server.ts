@@ -18,16 +18,21 @@ import adminRoutes from './routes/admin.routes';
 const app = express();
 
 // Security and utility middleware
-app.use(helmet());
 app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow localhost and frontend origins
-      callback(null, true);
-    },
-    credentials: true,
+  helmet({
+    crossOriginResourcePolicy: false,
+    crossOriginEmbedderPolicy: false,
   })
 );
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
